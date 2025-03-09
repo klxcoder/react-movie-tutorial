@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import MovieCard from '../components/MovieCard'
 import './Home.css'
 
@@ -33,7 +33,9 @@ function Home() {
       },
     ]
 
-  const handleSearch = () => {
+  const handleSearch = (e: FormEvent) => {
+    e.preventDefault();
+    alert(searchQuery);
   }
 
   return (
