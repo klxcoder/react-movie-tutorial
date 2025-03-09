@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react'
 import MovieCard from '../components/MovieCard'
-import './Home.css'
+import '../css/Home.css'
 
 function Home() {
 
