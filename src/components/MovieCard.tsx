@@ -1,13 +1,16 @@
 import '../css/MovieCard.css'
 
+export type Movie = {
+  id: number,
+  url: string,
+  title: string,
+  release_date: string,
+}
+
 function MovieCard({
   movie,
 }: {
-  movie: {
-    url: string,
-    title: string,
-    release_date: string,
-  }
+  movie: Movie
 }) {
 
   function onFavoriteClick() {
