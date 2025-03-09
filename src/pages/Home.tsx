@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react'
 import MovieCard from '../components/MovieCard'
 import '../css/Home.css'
-import { getPopularMovies } from '../services/api'
+import { getPopularMovies, searchMovies } from '../services/api'
 
 type Movie = {
   id: number,
@@ -9,6 +9,28 @@ type Movie = {
   url: string,
   release_date: string,
 }
+
+const mockMovies: Movie[] = [
+  {
+    id: 1,
+    title: "John Wick",
+    url: '',
+    release_date: "2020",
+  },
+  {
+    id: 2,
+    title: "Terminator",
+    url: '',
+
+    release_date: "1999",
+  },
+  {
+    id: 3,
+    title: "The Matrix",
+    url: '',
+    release_date: "1998",
+  },
+]
 
 function Home() {
 
@@ -22,28 +44,7 @@ function Home() {
       try {
         const popularMovies = await getPopularMovies();
         if (!popularMovies) {
-          const movies: Movie[] = [
-            {
-              id: 1,
-              title: "John Wick",
-              url: '',
-              release_date: "2020",
-            },
-            {
-              id: 2,
-              title: "Terminator",
-              url: '',
-
-              release_date: "1999",
-            },
-            {
-              id: 3,
-              title: "The Matrix",
-              url: '',
-              release_date: "1998",
-            },
-          ]
-          setMovies(movies);
+          setMovies(mockMovies);
           throw Error('FetchMoviesError: Can not fetch Movies')
         }
         setMovies(popularMovies);
@@ -57,9 +58,26 @@ function Home() {
     loadPopularMovies()
   }, [])
 
-  const handleSearch = (e: FormEvent) => {
+  const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
-    alert(searchQuery);
+    if (!searchQuery.trim()) return
+    if (loading) return
+    setLoading(true)
+    try {
+      const searchResults = await searchMovies(searchQuery)
+      if (!searchResults) {
+        const movies = mockMovies.filter(movie => movie.title.toLowerCase().includes(searchQuery.trim().toLowerCase()))
+        setMovies(movies)
+        throw Error('FetchMoviesError: Can not search Movies')
+      }
+      setMovies(searchResults)
+      setError('')
+    } catch (err) {
+      console.log(err);
+      setError("Failed to search movies...")
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -89,7 +107,7 @@ function Home() {
         </div>
       ) : (
         <div className="movies-grid">
-          {movies.map(movie => (
+          {movies?.map(movie => (
             <MovieCard
               key={movie.id}
               movie={movie}
