@@ -6,7 +6,7 @@ import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   // <StrictMode>
-  <BrowserRouter basename="/react-movie-tutorial">
+  <BrowserRouter basename="/react-movie-tutorial/">
     <App />
   </BrowserRouter>
   // </StrictMode>,
