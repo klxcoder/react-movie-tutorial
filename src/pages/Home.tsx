@@ -2,7 +2,6 @@ import { FormEvent, useEffect, useState } from 'react'
 import MovieCard, { Movie } from '../components/MovieCard'
 import '../css/Home.css'
 import { getPopularMovies, searchMovies } from '../services/api'
-import { mockMovies } from '../mockMovies'
 
 function Home() {
 
@@ -14,9 +13,8 @@ function Home() {
   useEffect(() => {
     const loadPopularMovies = async () => {
       try {
-        const popularMovies = await getPopularMovies();
+        const popularMovies: Movie[] = await getPopularMovies();
         if (!popularMovies) {
-          setMovies(mockMovies);
           throw Error('FetchMoviesError: Can not fetch Movies')
         }
         setMovies(popularMovies);
@@ -36,10 +34,8 @@ function Home() {
     if (loading) return
     setLoading(true)
     try {
-      const searchResults = await searchMovies(searchQuery)
+      const searchResults: Movie[] = await searchMovies(searchQuery)
       if (!searchResults) {
-        const movies = mockMovies.filter(movie => movie.title.toLowerCase().includes(searchQuery.trim().toLowerCase()))
-        setMovies(movies)
         throw Error('FetchMoviesError: Can not search Movies')
       }
       setMovies(searchResults)

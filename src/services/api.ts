@@ -1,17 +1,13 @@
-const API_KEY = "791ad8837a7e8dbc2e6cbd4363c9423d"
-
-const BASE_URL = "https://api.themoviedb.org/3"
+import { Movie } from "../components/MovieCard"
+import { mockMovies } from "../mockMovies"
 
 export const getPopularMovies = async () => {
-  const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}`)
-  const data = await response.json()
-  return data.results
+  // Call api here
+  return mockMovies
 }
 
-export const searchMovies = async (query: string) => {
-  const response = await fetch(
-    `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`
-  )
-  const data = await response.json()
-  return data.results
+export const searchMovies = async (searchQuery: string): Promise<Movie[]> => {
+  const movies: Movie[] = mockMovies.filter(movie => movie.title.toLowerCase().includes(searchQuery.trim().toLowerCase()))
+  // Call api here
+  return movies
 }
