@@ -31,6 +31,7 @@ function Home() {
         throw Error('FetchMoviesError: Can not fetch Movies')
       }
       setMovies(movies)
+      setError('')
     } catch (err) {
       console.log(err);
       setError("Failed to load movies...")
@@ -47,20 +48,7 @@ function Home() {
     e.preventDefault();
     if (!searchQuery.trim()) return
     if (loading) return
-    setLoading(true)
-    try {
-      const searchResults: Movie[] = await searchMovies(searchQuery)
-      if (!searchResults) {
-        throw Error('FetchMoviesError: Can not search Movies')
-      }
-      setMovies(searchResults)
-      setError('')
-    } catch (err) {
-      console.log(err);
-      setError("Failed to search movies...")
-    } finally {
-      setLoading(false);
-    }
+    loadMovies(() => searchMovies(searchQuery))
   }
 
   return (
