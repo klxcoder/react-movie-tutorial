@@ -5,14 +5,14 @@ type Value = {
   favorites: Movie[],
   addToFavorites: (movie: Movie) => void,
   removeFromFavorites: (movieId: number) => void,
-  isFavorite: (movieId: number) => void,
+  isFavorite: (movieId: number) => boolean,
 }
 
 const MovieContext = createContext<Value>({
   favorites: [],
   addToFavorites: () => { },
   removeFromFavorites: () => { },
-  isFavorite: () => { },
+  isFavorite: () => false,
 })
 
 export const useMovieContext = () => useContext(MovieContext)

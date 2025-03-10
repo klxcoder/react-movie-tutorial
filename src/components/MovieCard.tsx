@@ -1,3 +1,5 @@
+import { MouseEvent } from 'react';
+import { useMovieContext } from '../contexts/MovieContext';
 import '../css/MovieCard.css'
 
 export type Movie = {
@@ -13,8 +15,16 @@ function MovieCard({
   movie: Movie
 }) {
 
-  function onFavoriteClick() {
-    alert('clicked');
+  const { isFavorite, addToFavorites, removeFromFavorites } = useMovieContext()
+  const favorite = isFavorite(movie.id)
+
+  function onFavoriteClick(e: MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    if (favorite) {
+      removeFromFavorites(movie.id)
+    } else {
+      addToFavorites(movie)
+    }
   }
 
   return (<div className="movie-card">
@@ -22,7 +32,7 @@ function MovieCard({
       <img src={movie.url} alt={movie.title} />
       <div className="movie-overlay">
         <button
-          className="favorite-btn"
+          className={`favorite-btn ${favorite ? "active" : ""}`}
           onClick={onFavoriteClick}
         >♥</button>
       </div>
