@@ -1,4 +1,4 @@
-import { FormEvent, useCallback, useEffect, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import MovieCard, { Movie } from '../components/MovieCard'
 import '../css/Home.css'
 import { getPopularMovies, searchMovies } from '../services/api'
@@ -7,23 +7,8 @@ function useMoviesData() {
   const [movies, setMovies] = useState<Movie[]>([])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
-  return {
-    movies, setMovies,
-    error, setError,
-    loading, setLoading,
-  }
-}
 
-function Home() {
-
-  const [searchQuery, setSearchQuery] = useState("")
-  const {
-    movies, setMovies,
-    error, setError,
-    loading, setLoading,
-  } = useMoviesData()
-
-  const loadMovies = useCallback(async (fetchFunction: () => Promise<Movie[]>) => {
+  const loadMovies = async (fetchFunction: () => Promise<Movie[]>) => {
     setLoading(true)
     try {
       const movies: Movie[] = await fetchFunction()
@@ -38,7 +23,25 @@ function Home() {
     } finally {
       setLoading(false);
     }
-  }, [setError, setLoading, setMovies])
+  }
+
+  return {
+    movies, setMovies,
+    error, setError,
+    loading, setLoading,
+    loadMovies,
+  }
+}
+
+function Home() {
+
+  const [searchQuery, setSearchQuery] = useState("")
+  const {
+    movies,
+    error,
+    loading,
+    loadMovies,
+  } = useMoviesData()
 
   useEffect(() => {
     loadMovies(getPopularMovies)
