@@ -42,7 +42,7 @@ function Home() {
 
   useEffect(() => {
     loadMovies(getPopularMovies)
-  }, [setMovies, setError, setLoading, loadMovies])
+  }, [loadMovies])
 
   const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
