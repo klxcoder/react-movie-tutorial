@@ -24,6 +24,7 @@ function Home() {
   } = useMoviesData()
 
   const loadMovies = useCallback(async (fetchFunction: () => Promise<Movie[]>) => {
+    setLoading(true)
     try {
       const movies: Movie[] = await fetchFunction()
       if (!movies) {
