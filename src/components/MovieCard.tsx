@@ -3,7 +3,7 @@ import { useMovieContext } from '../contexts/MovieContext';
 import '../css/MovieCard.css'
 
 export type Movie = {
-  id: number,
+  id: string,
   url: string,
   title: string,
   release_date: string,

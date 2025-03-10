@@ -1,15 +1,8 @@
 import { FormEvent, useEffect, useState } from 'react'
-import MovieCard from '../components/MovieCard'
+import MovieCard, { Movie } from '../components/MovieCard'
 import '../css/Home.css'
 import { getPopularMovies, searchMovies } from '../services/api'
 import { mockMovies } from '../mockMovies'
-
-type Movie = {
-  id: number,
-  title: string,
-  url: string,
-  release_date: string,
-}
 
 function Home() {
 

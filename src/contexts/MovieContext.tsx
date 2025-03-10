@@ -4,8 +4,8 @@ import { Movie } from "../components/MovieCard"
 type Value = {
   favorites: Movie[],
   addToFavorites: (movie: Movie) => void,
-  removeFromFavorites: (movieId: number) => void,
-  isFavorite: (movieId: number) => boolean,
+  removeFromFavorites: (movieId: string) => void,
+  isFavorite: (movieId: string) => boolean,
 }
 
 const MovieContext = createContext<Value>({
@@ -38,11 +38,11 @@ export const MovieProvider = ({ children }: {
     setFavorites(prev => [...prev, movie])
   }
 
-  const removeFromFavorites = (movieId: number) => {
+  const removeFromFavorites = (movieId: string) => {
     setFavorites(prev => prev.filter(movie => movie.id !== movieId))
   }
 
-  const isFavorite = (movieId: number) => {
+  const isFavorite = (movieId: string) => {
     return favorites.some(movie => movie.id === movieId)
   }
 
