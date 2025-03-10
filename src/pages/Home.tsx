@@ -6,9 +6,11 @@ import { getPopularMovies, searchMovies } from '../services/api'
 function useMoviesData() {
   const [movies, setMovies] = useState<Movie[]>([])
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true)
   return {
     movies, setMovies,
     error, setError,
+    loading, setLoading,
   }
 }
 
@@ -18,8 +20,8 @@ function Home() {
   const {
     movies, setMovies,
     error, setError,
+    loading, setLoading,
   } = useMoviesData()
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const loadPopularMovies = async () => {
@@ -37,7 +39,7 @@ function Home() {
       }
     }
     loadPopularMovies()
-  }, [setMovies, setError])
+  }, [setMovies, setError, setLoading])
 
   const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
