@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useCallback, useEffect, useState } from 'react'
 import MovieCard, { Movie } from '../components/MovieCard'
 import '../css/Home.css'
 import { getPopularMovies, searchMovies } from '../services/api'
@@ -23,23 +23,24 @@ function Home() {
     loading, setLoading,
   } = useMoviesData()
 
-  useEffect(() => {
-    const loadPopularMovies = async () => {
-      try {
-        const popularMovies: Movie[] = await getPopularMovies();
-        if (!popularMovies) {
-          throw Error('FetchMoviesError: Can not fetch Movies')
-        }
-        setMovies(popularMovies);
-      } catch (err) {
-        console.log(err);
-        setError("Failed to load movies...")
-      } finally {
-        setLoading(false);
+  const loadMovies = useCallback(async (fetchFunction: () => Promise<Movie[]>) => {
+    try {
+      const movies: Movie[] = await fetchFunction()
+      if (!movies) {
+        throw Error('FetchMoviesError: Can not fetch Movies')
       }
+      setMovies(movies)
+    } catch (err) {
+      console.log(err);
+      setError("Failed to load movies...")
+    } finally {
+      setLoading(false);
     }
-    loadPopularMovies()
-  }, [setMovies, setError, setLoading])
+  }, [setError, setLoading, setMovies])
+
+  useEffect(() => {
+    loadMovies(getPopularMovies)
+  }, [setMovies, setError, setLoading, loadMovies])
 
   const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
