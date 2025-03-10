@@ -3,10 +3,17 @@ import MovieCard, { Movie } from '../components/MovieCard'
 import '../css/Home.css'
 import { getPopularMovies, searchMovies } from '../services/api'
 
+function useMoviesData() {
+  const [movies, setMovies] = useState<Movie[]>([])
+  return {
+    movies, setMovies,
+  }
+}
+
 function Home() {
 
   const [searchQuery, setSearchQuery] = useState("")
-  const [movies, setMovies] = useState<Movie[]>([])
+  const { movies, setMovies } = useMoviesData()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
 
@@ -26,7 +33,7 @@ function Home() {
       }
     }
     loadPopularMovies()
-  }, [])
+  }, [setMovies])
 
   const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
